@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ARTLINK Chatbot (Gemini Flash)</title>
+</head>
+<body>
+  <h2>ARTLINK Chatbot (Gemini 2.0 Flash)</h2>
+  <input id="userInput" type="text" placeholder="Ask something..." style="width: 300px;">
+  <button onclick="sendMessage()">Send</button>
+  <pre id="responseArea"></pre>
+
+  <script>
+    async function sendMessage() {
+      const userInput = document.getElementById('userInput').value;
+      const responseArea = document.getElementById('responseArea');
+      responseArea.textContent = "Waiting for response...";
+
+      try {
+        const response = await fetch('/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: userInput })
+        });
+        const data = await response.json();
+        responseArea.textContent = data.response || "No response.";
+      } catch (err) {
+        responseArea.textContent = "Error: " + err.message;
+      }
+    }
+  </script>
+</body>
+</html>
