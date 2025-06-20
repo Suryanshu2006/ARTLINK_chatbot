@@ -58,10 +58,13 @@ app.post('/chat', async (req, res) => {
       // Fallback for different response structure
       reply = result.candidates.map(c => c.content?.parts?.map(p => p.text).join('')).join(' ');
     }
-    res.json({ response: reply });
+    if (!reply || reply.trim() === '') {
+      reply = 'Sorry, I could not generate a response.';
+    }
+    res.json({ reply });
   } catch (error) {
     console.error('Gemini API error:', error);
-    res.status(500).json({ error: 'Failed to get response from Gemini.' });
+    res.status(500).json({ reply: 'There was an error connecting to Artlink Bot.' });
   }
 });
 
